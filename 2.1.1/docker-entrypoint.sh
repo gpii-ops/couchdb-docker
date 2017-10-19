@@ -25,6 +25,12 @@ if [ "$1" = 'couchdb' ]; then
 fi
 
 if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
+
+	if [ -n "$ERLANG_COOKIE" ]; then
+		echo $ERLANG_COOKIE > /opt/couchdb/.erlang.cookie
+		chmod 600 /opt/couchdb/.erlang.cookie
+	fi
+
 	# we need to set the permissions here because docker mounts volumes as root
 	chown -R couchdb:couchdb /opt/couchdb
 
