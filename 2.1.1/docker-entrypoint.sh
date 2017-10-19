@@ -34,6 +34,10 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	chmod 664 /opt/couchdb/etc/local.d/*.ini
 	chmod 775 /opt/couchdb/etc/*.d
 
+	if [ -z "$NODENAME" ]; then
+		NODENAME=$(hostname -f)
+	fi
+
 	if [ ! -z "$NODENAME" ] && ! grep "couchdb@" /opt/couchdb/etc/vm.args; then
 		echo "-name couchdb@$NODENAME" >> /opt/couchdb/etc/vm.args
 	fi
