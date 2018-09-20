@@ -33,6 +33,15 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
         find /opt/couchdb/etc -name \*.ini -exec chmod -f 664 {} \;
 	chmod -f 775 /opt/couchdb/etc/*.d || true
 
+	if [ -n "$ERLANG_COOKIE" ]; then
+		echo $ERLANG_COOKIE > /opt/couchdb/.erlang.cookie
+		chmod 600 /opt/couchdb/.erlang.cookie
+    fi
+
+ 	if [ -z "$NODENAME" ]; then
+		NODENAME=$(hostname -f)
+    fi
+
 	if [ ! -z "$NODENAME" ] && ! grep "couchdb@" /opt/couchdb/etc/vm.args; then
 		echo "-name couchdb@$NODENAME" >> /opt/couchdb/etc/vm.args
 	fi
